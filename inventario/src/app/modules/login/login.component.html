@@ -1,0 +1,53 @@
+<div>
+  <div class="wrapper">
+    <div class="img-container">
+      <img src="assets/Imglateral.png" />
+    </div>
+    <div class="form-container">
+      <div class="form-inner">
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+          <div class="row mb-4">
+            <div class="col-12 text-center mb-3">
+              <img src="assets/LogoInventario.png" class="logo" alt="Logo" />
+            </div>
+          </div>
+          <div class="row mb-5 text-center">
+            <div class="col-12">
+              <img src="assets/SectionTitleLogin.png" class="section-title" alt="Logo Login" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Correo Electrónico</label>
+            <input type="email" formControlName="email" class="form-control" placeholder="tuemail@dominio.com" />
+            <small *ngIf="loginForm.get('email')?.hasError('email')" class="text-danger">Por favor, ingresa un correo
+              válido.</small>
+          </div>
+          <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input type="password" formControlName="password" class="form-control"
+              placeholder="Ingresa tu contraseña" />
+          </div>
+          <div *ngIf="showVerificationForm" class="form-group">
+            <form (ngSubmit)="verifyCode(verificationCode.value)">
+              <label for="password">Verificar Codigo</label>
+              <input type="number" class="form-control" id="verificationCode" #verificationCode required
+                placeholder="Ingresa el codigo que se envio a tu correo" />
+                <button type="submit" class="btn btn-primary w-100">
+                  Verificar
+                </button>
+            </form>
+          </div>
+          <div *ngIf="!showVerificationForm" class="button-container">
+            <div class="row">
+              <div class="col-sm-auto col-md-5">
+                <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary w-100">
+                  Iniciar Sesion
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
