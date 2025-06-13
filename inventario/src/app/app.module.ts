@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './modules/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InventarioComponent } from './modules/inventario/inventario.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    InventarioComponent
   ],
   imports: [
     BrowserModule,

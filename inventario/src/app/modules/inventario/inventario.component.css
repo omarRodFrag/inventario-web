@@ -1,0 +1,101 @@
+.inventario-container {
+  background: #f9f9f9;
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 900px;
+  margin: auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-box {
+  border: none;
+  background: #f0f0f0;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  width: 200px;
+}
+
+.producto-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #aaa;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-top: 1rem;
+}
+
+.producto-info {
+  display: flex;
+  align-items: center;
+}
+
+.producto-info img {
+  width: 30px;
+  margin-right: 0.5rem;
+}
+
+.nombre {
+  font-weight: bold;
+}
+
+.cantidad {
+  font-weight: normal;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.acciones {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.eliminar {
+  background: none;
+  border: none;
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.editar {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.agregar {
+  background-color: #8ae88a;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 1rem;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+}
+
+.regresar {
+  text-decoration: none;
+  color: gray;
+  font-weight: 500;
+}

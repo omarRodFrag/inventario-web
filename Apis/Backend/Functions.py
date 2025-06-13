@@ -74,6 +74,51 @@ def token_required(f):
     
     return decorated_function
 
+def fnLogin(email, password):
+    try:
+        # Buscar al usuario en la base de datos (sin comparar la contraseña directamente)
+        jsnInfoUser = dbConnLocal.clUsuarios.find_one({"strEmail": email})
+        
+        if jsnInfoUser is not None:
+            # Verificar la contraseña con bcrypt
+            hashed_password = jsnInfoUser.get('strPassword', '')
+
+            if bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8')): 
+                # Generar el JWT
+                expiration_time = datetime.datetime.utcnow() + datetime.timedelta(hours=1)  # Token expira en 1 hora
+                payload = {
+                    'idUsuario': jsnInfoUser['idUsuario'],
+                    'exp': expiration_time  # Fecha de expiración del token
+                }
+                token = jwt.encode(payload, JWT_SECRET_KEY, algorithm='HS256')  # Firmamos el token con la clave secreta
+                
+                # Generar un código de verificación aleatorio
+                verification_code = random.randint(100000, 999999)
+
+                # Almacenar el código de verificación en la base de datos
+                dbConnLocal.clUsuarios.update_one(
+                    {"strEmail": email},
+                    {"$set": {"verification_code": verification_code}}
+                )
+
+                # Enviar el código de verificación por correo electrónico
+                email_sent = send_verification_email(jsnInfoUser['strEmail'], verification_code)
+                if email_sent:
+                    return {
+                                'intResponse': 200,
+                                'message': 'Código de verificación enviado al correo.',
+                                'token': token
+                            }
+                else:
+                    return {'intResponse': 500, 'Result': {'error': 'No se pudo enviar el correo de verificación.'}}
+            else:
+                return {'intResponse': 203, 'Result': {'usuario': {}, 'error': 'Usuario o contraseña incorrecta'}}  # Contraseña incorrecta
+        else:
+            return {'intResponse': 203, 'Result': {'usuario': {}, 'error': 'Usuario no encontrado'}}  # Usuario no encontrado
+    except Exception as exception:
+        print('fnLogin', exception)
+        return {'intResponse': 500}  # Error interno del servidor
+
 
 
 
@@ -270,54 +315,7 @@ def send_verification_email(email, code):
         print(f"Error al enviar correo: {e}")
         return False
 
-def fnLogin(email, password):
-    try:
-        # Buscar al usuario en la base de datos (sin comparar la contraseña directamente)
-        jsnInfoUser = dbConnLocal.clUsuarios.find_one({"strEmail": email})
-        
-        if jsnInfoUser is not None:
-            # Verificar la contraseña con bcrypt
-            hashed_password = jsnInfoUser.get('strPassword', '')
 
-            if bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8')): 
-                # Generar el JWT
-                expiration_time = datetime.datetime.utcnow() + datetime.timedelta(hours=1)  # Token expira en 1 hora
-                payload = {
-                    'idUsuario': jsnInfoUser['idUsuario'],
-                    'exp': expiration_time  # Fecha de expiración del token
-                }
-                token = jwt.encode(payload, JWT_SECRET_KEY, algorithm='HS256')  # Firmamos el token con la clave secreta
-                
-                # Generar un código de verificación aleatorio
-                verification_code = random.randint(100000, 999999)
-
-                # Almacenar el código de verificación en la base de datos
-                dbConnLocal.clUsuarios.update_one(
-                    {"strEmail": email},
-                    {"$set": {"verification_code": verification_code}}
-                )
-
-                # Enviar el código de verificación por correo electrónico
-                email_sent = send_verification_email(jsnInfoUser['strEmail'], verification_code)
-                if email_sent:
-                    # Preparar la respuesta con el token y mensaje de correo enviado
-                    jsnResponse = {
-                        'strEmail': jsnInfoUser['strEmail'],
-                        'strFirstName': jsnInfoUser['strFirstName'],
-                        'idUsuario': jsnInfoUser['idUsuario'],
-                        'token': token,  # Agregar el token a la respuesta
-                        'role': jsnInfoUser['role']
-                    }
-                    return {'intResponse': 200, 'Result': {'usuario': jsnResponse, 'message': 'Código de verificación enviado al correo.'}}
-                else:
-                    return {'intResponse': 500, 'Result': {'error': 'No se pudo enviar el correo de verificación.'}}
-            else:
-                return {'intResponse': 203, 'Result': {'usuario': {}, 'error': 'Usuario o contraseña incorrecta'}}  # Contraseña incorrecta
-        else:
-            return {'intResponse': 203, 'Result': {'usuario': {}, 'error': 'Usuario no encontrado'}}  # Usuario no encontrado
-    except Exception as exception:
-        print('fnLogin', exception)
-        return {'intResponse': 500}  # Error interno del servidor
     
     
 

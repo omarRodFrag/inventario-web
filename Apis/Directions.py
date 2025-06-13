@@ -34,51 +34,11 @@ app.config['MAIL_DEFAULT_SENDER'] = 'omar.rod.fraf@gmail.com'
 mail = Mail(app)
 
 
-# API para el registro de usuarios
-@app.route('/api/registro', methods=['POST'])
-def registro():
-    try:
-        data = request.get_json()
-        strFirstName = data.get('strFirstName')
-        strLastName = data.get('strLastName')
-        strEmail = data.get('strEmail')
-        strPassword = data.get('strPassword')
-        strPhone = data.get('strPhone')
-        strAddress = data.get('strAddress')
-        strPostalCode = data.get('strPostalCode')
-        strTitularNombre = data.get('strTitularNombre')
-        strCardNumber = data.get('strCardNumber')
-        strExpirationDate = data.get('strExpirationDate')
-        strSecurityCode = data.get('strSecurityCode')
-
-        # Llama a la función en Functions.py para insertar el usuario
-        documento_actualizado = callMethod.insert_usuario_log({
-            "strFirstName": strFirstName,
-            "strLastName": strLastName,
-            "strEmail": strEmail,
-            "strPassword": strPassword,
-            "strPhone": strPhone,
-            "strAddress": strAddress,
-            "strPostalCode": strPostalCode,
-            "strTitularNombre": strTitularNombre,
-            "strCardNumber": strCardNumber,
-            "strExpirationDate": strExpirationDate,
-            "strSecurityCode": strSecurityCode,
-            "role":"admin"
-        })
-
-        return jsonify(documento_actualizado), 201  # Retorna el resultado en formato JSON y el código de estado 201
-
-    except Exception as e:
-        HelperFunctions.PrintException()
-        print(str(e))
-        return jsonify({'error': 'Error interno del servidor.'}), 500  # Mensaje de error más claro
-
 
 
 
 # Ruta para el login
-@app.route('/api/login', methods=['POST'])
+@app.route('/login', methods=['POST'])
 def login():
     try:
         data = request.get_json()
@@ -93,12 +53,15 @@ def login():
         return jsonify({'error': 'Error en la petición'}), 400
 
 # Ruta para verificar el código MFA
-@app.route('/api/verify', methods=['POST'])
-def verify_code():
+@app.route('/verify', methods=['POST'])
+@token_required
+def verify_code(current_user):
     try:
         data = request.get_json()
         print("Datos recibidos:", data)
-        email = data.get('strEmail')
+        
+        # Ya no necesitas extraer el email del body
+        email = current_user['strEmail']
         entered_code = data.get('code')
 
         # Buscar el código de verificación en la base de datos
@@ -118,6 +81,7 @@ def verify_code():
     except Exception as e:
         print(str(e))
         return jsonify({'message': 'Error al verificar el código'}), 500
+
 
 # API para obtener todos los productos
 @app.route('/api/productos', methods=['GET'])
@@ -225,32 +189,6 @@ def eliminar_carrito_usuario():
         HelperFunctions.PrintException()
         print(str(e))
         return jsonify({'error': 'Error interno del servidor.'}), 500
-
-
-
-
-
-# Diccionario con palabras clave y respuestas
-responses = {
-    "hola": "¡Hola! ¿Cómo estás?",
-    "adios": "¡Adiós! Que tengas un buen día.",
-    "¿como estas?": "Estoy bien, gracias por preguntar.",
-    "necesito ayuda": "Claro, ¿en qué te puedo ayudar?",
-    "¿que haces?": "Estoy conversando contigo, ¿y tú?"
-}
-
-@app.route('/api/chat', methods=["POST"])
-def chat():
-    user_message = request.json.get("message").lower()  # Obtiene el mensaje del usuario y lo convierte a minúsculas
-    response = "Lo siento, no entendí tu mensaje."  # Respuesta por defecto
-    
-    # Busca la respuesta que coincida con el mensaje
-    for key, value in responses.items():
-        if key in user_message:
-            response = value
-            break
-    
-    return jsonify({"response": response})
 
 
 

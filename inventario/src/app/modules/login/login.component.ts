@@ -47,8 +47,8 @@ export class LoginComponent {
     }
 
     const login: Login = {
-      email: this.loginForm.value.email,
-      password: this.loginForm.value.password,
+      strEmail: this.loginForm.value.email,
+      strPassword: this.loginForm.value.password,
     };
 
     // Llama al método del servicio para login
@@ -56,19 +56,15 @@ export class LoginComponent {
       (response) => {
         if (response.message) {
           // Guardar información del usuario en localStorage
-          const rol = response.rol;
           const token = response.token;
           console.log(response.message)
-          console.log("rol: ",rol, " token: ",token)
-          localStorage.setItem('rol', rol);
-          localStorage.setItem('token', token);
+          localStorage.setItem('auth_token', token);
           Swal.fire({
             icon: 'success',
             title: 'Enviando correo de verificación',
             showConfirmButton: false,
             timer: 2000,
           });
-          localStorage.setItem('auth_token', response.token);  // Guarda el token en el localStorage
           this.showVerificationForm = true;
         }
       },
@@ -91,7 +87,7 @@ export class LoginComponent {
 
   // Método para verificar el código de verificación
   verifyCode(verificationCode: string) {
-    const body = { email: this.loginForm.value.email, code: verificationCode };
+    const body = { code: verificationCode };
 
     // Obtén el token del localStorage
     const token = localStorage.getItem('auth_token');
@@ -109,7 +105,7 @@ export class LoginComponent {
             showConfirmButton: false,
             timer: 2000,
           });
-          this.router.navigate(['/mapa']);
+          this.router.navigate(['/inventario']);
         } else {
           alert('Código incorrecto');
         }

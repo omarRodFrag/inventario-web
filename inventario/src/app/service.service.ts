@@ -17,7 +17,7 @@ export class ServiceService {
   }
 
   // Verificar el código de verificación
-  verifyCode(body: { email: string, code: string }, headers: HttpHeaders): Observable<any> {
+  verifyCode(body: {code: string }, headers: HttpHeaders): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/verify`, body, { headers });
   }
 }

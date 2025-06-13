@@ -1,0 +1,27 @@
+<div class="inventario-container">
+  <div class="header">
+    <h2>Inventario</h2>
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar producto" class="search-box" />
+  </div>
+
+  <div *ngFor="let producto of productosFiltrados()" class="producto-card">
+    <div class="producto-info">
+      <img src="assets/caja-icono.png" alt="Icono" />
+      <span class="nombre">{{ producto.nombre }}</span>
+    </div>
+    <span class="cantidad">{{ producto.cantidad }}</span>
+    <div class="status">
+      <label>Status</label>
+      <input type="checkbox" [(ngModel)]="producto.activo" />
+    </div>
+    <div class="acciones">
+      <button class="eliminar" (click)="eliminarProducto(producto)">Eliminar</button>
+      <button class="editar" (click)="editarProducto(producto)">Editar ➤</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="#" class="regresar">⬅ Regresar</a>
+    <button class="agregar" (click)="agregarProducto()">Agregar Producto</button>
+  </div>
+</div>
