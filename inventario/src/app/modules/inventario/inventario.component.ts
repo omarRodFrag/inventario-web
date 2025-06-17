@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ServiceService } from '../../service.service';
+import Swal from 'sweetalert2';
+import { Producto } from '../login/interface/producto.interface';
 
 @Component({
   selector: 'app-inventario',
@@ -8,14 +12,28 @@ import { Component } from '@angular/core';
 })
 export class InventarioComponent {
   searchTerm: string = '';
-  productos = [
-    { nombre: 'Producto 1', cantidad: 10, activo: true },
-    { nombre: 'Producto 2', cantidad: 3, activo: false },
-    { nombre: 'Producto 3', cantidad: 7, activo: true },
-    { nombre: 'Producto 4', cantidad: 12, activo: true },
-    { nombre: 'Producto 5', cantidad: 1, activo: false },
-    { nombre: 'Producto 6', cantidad: 5, activo: true }
-  ];
+  productos: Producto[] = [];
+
+  constructor(
+    private router: Router,
+    private service: ServiceService
+  ) {}
+
+  ngOnInit(): void {
+    this.cargarProductos();
+  }
+
+  cargarProductos(): void {
+    const token = localStorage.getItem('auth_token')!;
+    this.service.obtenerProductos(token).subscribe({
+      next: (data) => {
+        this.productos = data;
+      },
+      error: () => {
+        Swal.fire('Error', 'No se pudieron cargar los productos', 'error');
+      }
+    });
+  }
 
   productosFiltrados() {
     return this.productos.filter(p =>
@@ -24,17 +42,26 @@ export class InventarioComponent {
   }
 
   agregarProducto() {
-    alert('Agregar producto');
+    this.router.navigate(['/productos/agregar']);
   }
 
-  editarProducto(producto: any) {
-    alert(`Editar ${producto.nombre}`);
+  editarProducto(producto: Producto) {
+    this.router.navigate(['/productos/editar', producto._id]);
   }
 
-  eliminarProducto(producto: any) {
-    const confirmacion = confirm(`¿Eliminar ${producto.nombre}?`);
-    if (confirmacion) {
-      this.productos = this.productos.filter(p => p !== producto);
-    }
+  eliminarProducto(producto: Producto) {
+    const confirmar = confirm(`¿Eliminar ${producto.nombre}?`);
+    if (!confirmar || !producto._id) return;
+
+    const token = localStorage.getItem('auth_token')!;
+    this.service.eliminarProducto(producto._id, token).subscribe({
+      next: () => {
+        Swal.fire('Eliminado', 'Producto eliminado correctamente', 'success');
+        this.cargarProductos(); // recargar lista
+      },
+      error: () => {
+        Swal.fire('Error', 'No se pudo eliminar el producto', 'error');
+      }
+    });
   }
 }

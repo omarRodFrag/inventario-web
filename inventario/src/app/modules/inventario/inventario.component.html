@@ -6,13 +6,13 @@
 
   <div *ngFor="let producto of productosFiltrados()" class="producto-card">
     <div class="producto-info">
-      <img src="assets/caja-icono.png" alt="Icono" />
+      <i class="bi bi-box-seam me-2"></i>
       <span class="nombre">{{ producto.nombre }}</span>
     </div>
     <span class="cantidad">{{ producto.cantidad }}</span>
     <div class="status">
       <label>Status</label>
-      <input type="checkbox" [(ngModel)]="producto.activo" />
+      <input type="checkbox" [(ngModel)]="producto.activo" disabled />
     </div>
     <div class="acciones">
       <button class="eliminar" (click)="eliminarProducto(producto)">Eliminar</button>
@@ -21,7 +21,7 @@
   </div>
 
   <div class="footer">
-    <a href="#" class="regresar">⬅ Regresar</a>
+    <a routerLink="/login" class="regresar">⬅ Regresar</a>
     <button class="agregar" (click)="agregarProducto()">Agregar Producto</button>
   </div>
 </div>

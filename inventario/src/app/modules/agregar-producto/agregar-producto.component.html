@@ -1,0 +1,42 @@
+<div class="container-formulario">
+  <h2>{{ modoEdicion ? 'Editar Producto' : 'Agregar Producto' }}</h2>
+
+  <form [formGroup]="productoForm" (ngSubmit)="guardar()">
+    <div class="form-group">
+      <label>Nombre</label>
+      <input type="text" formControlName="nombre" class="form-control" />
+    </div>
+
+    <div class="form-group">
+      <label>Categoría</label>
+      <input type="text" formControlName="categoria" class="form-control" />
+    </div>
+
+    <div class="form-group">
+      <label>Descripción</label>
+      <textarea formControlName="descripcion" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Stock</label>
+      <input type="number" formControlName="cantidad" class="form-control" min="0" />
+    </div>
+
+    <div class="form-group">
+      <label>Stock Minimo</label>
+      <input type="number" formControlName="stockMinimo" class="form-control" step="0.01" min="0" />
+    </div>
+
+    <div class="form-group checkbox">
+      <label>
+        <input type="checkbox" formControlName="activo" />
+        Activo
+      </label>
+    </div>
+
+    <div class="button-group">
+      <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">{{ modoEdicion ? 'Actualizar' : 'Guardar' }}</button>
+    </div>
+  </form>
+</div>

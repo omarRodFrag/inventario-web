@@ -84,182 +84,92 @@ def verify_code(current_user):
 
 
 # API para obtener todos los productos
-@app.route('/api/productos', methods=['GET'])
-def obtener_productos():
+@app.route('/productos', methods=['GET'])
+@token_required
+def obtener_productos(current_user):
     try:
-        # Llama a la función en Functions.py para obtener todos los productos
         productos = callMethod.obtener_productos()
-        return jsonify(productos), 200  # Retorna los productos en formato JSON
+        return jsonify(productos), 200
     except Exception as e:
         HelperFunctions.PrintException()
-        print(str(e))
-        return jsonify({'error': 'Error interno del servidor.'}), 500
+        return jsonify({'error': 'Error al obtener productos'}), 500
+
 
 
 # API para obtener un producto específico
-@app.route('/api/producto/<int:id>', methods=['GET'])
-def obtener_producto(id):
+@app.route('/productos/<int:idProducto>', methods=['GET'])
+@token_required
+def obtener_producto(current_user, idProducto):
     try:
-        # Llama a la función en Functions.py para obtener el producto por ID
-        producto = callMethod.obtener_producto(id)
+        producto = callMethod.obtener_producto(idProducto)
         if producto:
             return jsonify(producto), 200
         else:
             return jsonify({'error': 'Producto no encontrado'}), 404
     except Exception as e:
         HelperFunctions.PrintException()
-        print(str(e))
-        return jsonify({'error': 'Error interno del servidor.'}), 500
+        return jsonify({'error': 'Error al obtener producto'}), 500
 
 
-# API para agregar un producto al carrito del usuario
-@app.route('/api/carrito/agregar', methods=['POST'])
-def agregar_producto_carrito():
+@app.route('/productos/agregar', methods=['POST'])
+@token_required
+def agregar_producto(current_user):
     try:
         data = request.get_json()
-        idUsuario = data.get('idUsuario')
-        idProducto = data.get('idProducto')
-
-        # Llama a la función en Functions.py para agregar el producto al carrito del usuario
-        resultado = callMethod.agregar_producto_carrito(idUsuario, idProducto)
-
+        resultado = callMethod.agregar_producto(data)
         if resultado['success']:
-            return jsonify({'message': 'Producto agregado al carrito'}), 200
+            return jsonify({'message': 'Producto agregado correctamente'}), 201
         else:
-            return jsonify({'error': 'Error al agregar el producto al carrito'}), 400
+            return jsonify({'error': resultado['error']}), 400
     except Exception as e:
         HelperFunctions.PrintException()
-        print(str(e))
-        return jsonify({'error': 'Error interno del servidor.'}), 500
+        return jsonify({'error': 'Error al agregar producto'}), 500
 
 
-# API para obtener los productos del carrito del usuario
-@app.route('/api/carrito/<int:idUsuario>', methods=['GET'])
-def obtener_productos_carrito(idUsuario):
-    try:
-        # Llama a la función en Functions.py para obtener el carrito del usuario
-        carrito = callMethod.obtener_carrito(idUsuario)
-        if carrito:
-            return jsonify(carrito), 200
-        else:
-            return jsonify({'error': 'Carrito no encontrado'}), 404
-    except Exception as e:
-        HelperFunctions.PrintException()
-        print(str(e))
-        return jsonify({'error': 'Error interno del servidor.'}), 500
-
-
-# API para eliminar un producto del carrito del usuario
-@app.route('/api/carrito/eliminar', methods=['POST'])
-def eliminar_producto_carrito():
+@app.route('/productos/actualizar/<int:idProducto>', methods=['PUT'])
+@token_required
+def actualizar_producto(current_user, idProducto):
     try:
         data = request.get_json()
-        idUsuario = data.get('idUsuario')
-        idProducto = data.get('idProducto')
-
-        # Llama a la función en Functions.py para eliminar el producto del carrito
-        resultado = callMethod.eliminar_producto_carrito(idUsuario, idProducto)
-
+        resultado = callMethod.actualizar_producto(idProducto, data)
         if resultado['success']:
-            return jsonify({'message': 'Producto eliminado del carrito'}), 200
+            return jsonify({'message': 'Producto actualizado correctamente'}), 200
         else:
-            return jsonify({'error': 'Error al eliminar el producto del carrito'}), 400
+            return jsonify({'error': resultado['error']}), 400
     except Exception as e:
         HelperFunctions.PrintException()
-        print(str(e))
-        return jsonify({'error': 'Error interno del servidor.'}), 500
+        return jsonify({'error': 'Error al actualizar el producto'}), 500
 
-
-
-# API para eliminar el carrito del usuario
-@app.route('/api/carrito/eliminar', methods=['DELETE'])
-def eliminar_carrito_usuario():
+@app.route('/productos/stock/<int:idProducto>', methods=['PATCH'])
+@token_required
+def ajustar_stock(current_user, idProducto):
     try:
         data = request.get_json()
-        idUsuario = data.get('idUsuario')
+        cantidad = data.get("cantidad")  # Puede ser positiva o negativa
 
-        # Llama a la función en Functions.py para eliminar el carrito del usuario
-        resultado = callMethod.eliminar_carrito(idUsuario)
-
+        resultado = callMethod.ajustar_stock(idProducto, cantidad)
         if resultado['success']:
-            return jsonify({'message': 'Compra realizada correctamente'}), 200
+            return jsonify({'message': 'Stock ajustado correctamente'}), 200
         else:
-            return jsonify({'error': 'Error al eliminar el carrito'}), 400
+            return jsonify({'error': resultado['error']}), 400
     except Exception as e:
         HelperFunctions.PrintException()
-        print(str(e))
-        return jsonify({'error': 'Error interno del servidor.'}), 500
-
-
-
-
-
-# API para obtener un producto específico
-@app.route('/api/usuario/<int:id>', methods=['GET'])
-def obtener_usuario(id):
-    try:
-        # Llama a la función en Functions.py para obtener el usuario por ID
-        usuario = callMethod.obtener_usuario(id)
-        if usuario:
-            return jsonify(usuario), 200
-        else:
-            return jsonify({'error': 'Usuario no encontrado'}), 404
-    except Exception as e:
-        HelperFunctions.PrintException()
-        print(str(e))
-        return jsonify({'error': 'Error interno del servidor.'}), 500
+        return jsonify({'error': 'Error al ajustar el stock'}), 500
     
 
-# API para obtener un producto específico
-@app.route('/api/usuario/todos', methods=['GET'])
-def obtener_usuariosAll():
+@app.route('/productos/eliminar/<int:idProducto>', methods=['DELETE'])
+@token_required
+def eliminar_producto(current_user, idProducto):
     try:
-        # Llama a la función en Functions.py para obtener la lista de usuarios
-        usuarios = callMethod.obtener_usuariosAll()
-        if usuarios:
-            return (usuarios), 200
-        else:
-            return jsonify({'error': 'Usuarios no encontrados'}), 404
-    except Exception as e:
-        HelperFunctions.PrintException()
-        print(str(e))
-        return jsonify({'error': 'Error interno del servidor.'}), 500
-
-# API para eliminar un producto del carrito del usuario
-@app.route('/api/usuario/actualizar', methods=['PUT'])
-def actualizar_Usuario():
-    try:
-        data = request.get_json()
-        strFirstName = data.get('strFirstName')
-        strLastName = data.get('strLastName')
-        strEmail = data.get('strEmail')
-        strPassword = data.get('strPassword')
-        strPhone = data.get('strPhone')
-        strAddress = data.get('strAddress')
-        strPostalCode = data.get('strPostalCode')
-
-        # Llama a la función en Functions.py para insertar el usuario
-        documento_actualizado ={
-            "strFirstName": strFirstName,
-            "strLastName": strLastName,
-            "strEmail": strEmail,
-            "strPassword": strPassword,
-            "strPhone": strPhone,
-            "strAddress": strAddress,
-            "strPostalCode": strPostalCode,
-        }
-
-        # Llama a la función en Functions.py para eliminar el producto del carrito
-        resultado = callMethod.actualizar_Usuario(documento_actualizado)
-
+        resultado = callMethod.eliminar_producto(idProducto)
         if resultado['success']:
-            return jsonify({'message': 'Usuario actualizado correctamente'}), 200
+            return jsonify({'message': 'Producto eliminado correctamente'}), 200
         else:
-            return jsonify({'error': 'Error al actualizar la informacion del usuario'}), 400
+            return jsonify({'error': resultado['error']}), 404
     except Exception as e:
         HelperFunctions.PrintException()
-        print(str(e))
-        return jsonify({'error': 'Error interno del servidor.'}), 500
+        return jsonify({'error': 'Error al eliminar el producto'}), 500
+
 
 if __name__ == '__main__':
     # Obtén el puerto de la variable de entorno

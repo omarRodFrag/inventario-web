@@ -7,12 +7,14 @@ import { LoginComponent } from './modules/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InventarioComponent } from './modules/inventario/inventario.component';
+import { AgregarProductoComponent } from './modules/agregar-producto/agregar-producto.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    InventarioComponent
+    InventarioComponent,
+    AgregarProductoComponent
   ],
   imports: [
     BrowserModule,
