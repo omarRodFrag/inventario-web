@@ -38,7 +38,7 @@ try:
     print("Conexión exitosa a MongoDB Atlas")
     
     # Prueba una simple consulta
-    test_collection = dbConnLocal.clProductos.find_one()
+    test_collection = dbConnLocal.clUsuarios.find_one()
     if test_collection:
         print("Conexión verificada, datos obtenidos.")
     else:
