@@ -1,0 +1,39 @@
+<div class="alertas-container">
+  <h2>Productos con bajo stock ({{ alertas.length }})</h2>
+
+  <!-- Si no hay alertas -->
+  <div *ngIf="alertas.length === 0" class="sin-alertas">
+    ✅ Todo en orden, no hay productos con stock bajo.
+  </div>
+
+  <!-- Lista de alertas -->
+  <div
+    *ngFor="let p of alertas"
+    class="alerta-card"
+    [ngClass]="{
+      'sin-stock': p.cantidad === 0,
+      'bajo-stock': p.cantidad > 0 && p.cantidad <= p.stockMinimo
+    }"
+  >
+    <span class="nombre-prod">{{ p.nombre }}</span>
+
+    <span
+      class="badge-cant"
+      [ngClass]="{
+        rojo: p.cantidad === 0,
+        naranja: p.cantidad > 0 && p.cantidad <= p.stockMinimo
+      }"
+    >
+      {{ p.cantidad }} / mín. {{ p.stockMinimo }}
+    </span>
+
+    <button
+      class="btn-ajustar"
+      [routerLink]="['/productos/stock', p.idProducto]"
+    >
+      Ajustar
+    </button>
+  </div>
+
+  <a routerLink="/inventario" class="link-back">⬅ Volver al inventario</a>
+</div>

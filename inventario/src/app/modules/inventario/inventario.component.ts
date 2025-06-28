@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ServiceService } from '../../service.service';
 import Swal from 'sweetalert2';
 import { Producto } from '../login/interface/producto.interface';
+import { AlertasService } from '../../shared/alertas.service';
 
 @Component({
   selector: 'app-inventario',
@@ -16,7 +17,8 @@ export class InventarioComponent {
 
   constructor(
     private router: Router,
-    private service: ServiceService
+    private service: ServiceService,
+    private alertasService: AlertasService 
   ) {}
 
   ngOnInit(): void {
@@ -28,6 +30,7 @@ export class InventarioComponent {
     this.service.obtenerProductos(token).subscribe({
       next: (data) => {
         this.productos = data;
+        this.alertasService.refrescar();
       },
       error: () => {
         Swal.fire('Error', 'No se pudieron cargar los productos', 'error');
@@ -46,15 +49,18 @@ export class InventarioComponent {
   }
 
   editarProducto(producto: Producto) {
-    this.router.navigate(['/productos/editar', producto._id]);
+    this.router.navigate(['/productos/editar', producto.idProducto]);
   }
+  ajustarStock(producto: Producto) {
+  this.router.navigate(['/productos/stock', producto.idProducto]);
+}
 
   eliminarProducto(producto: Producto) {
     const confirmar = confirm(`¿Eliminar ${producto.nombre}?`);
-    if (!confirmar || !producto._id) return;
+    if (!confirmar || !producto.idProducto) return;
 
     const token = localStorage.getItem('auth_token')!;
-    this.service.eliminarProducto(producto._id, token).subscribe({
+    this.service.eliminarProducto(producto.idProducto, token).subscribe({
       next: () => {
         Swal.fire('Eliminado', 'Producto eliminado correctamente', 'success');
         this.cargarProductos(); // recargar lista

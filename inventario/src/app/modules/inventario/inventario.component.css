@@ -86,6 +86,14 @@
   cursor: pointer;
 }
 
+.ajustar-stock {
+  background: none;
+  border: none;
+  color: #000000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 .footer {
   display: flex;
   justify-content: space-between;

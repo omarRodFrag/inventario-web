@@ -1,0 +1,11 @@
+<nav class="topbar">
+  <a routerLink="/inventario" routerLinkActive="active">Inventario</a>
+
+  <a routerLink="/productos/alertas"
+     class="alert-link"
+     routerLinkActive="active">
+    <i class="bi bi-exclamation-triangle-fill text-danger"></i>
+    Alertas
+    <span class="alert-count" *ngIf="alertasCount$ | async as n">{{ n }}</span>
+  </a>
+</nav>

@@ -15,6 +15,7 @@
       <input type="checkbox" [(ngModel)]="producto.activo" disabled />
     </div>
     <div class="acciones">
+      <button class="ajustar-stock" (click)="ajustarStock(producto)">Ajustar stock</button>
       <button class="eliminar" (click)="eliminarProducto(producto)">Eliminar</button>
       <button class="editar" (click)="editarProducto(producto)">Editar ➤</button>
     </div>

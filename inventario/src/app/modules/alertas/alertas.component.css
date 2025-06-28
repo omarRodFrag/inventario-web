@@ -1,0 +1,106 @@
+/* ============ FONDO GENERAL ============ */
+:host {
+  display: block;
+  height: 100vh;
+  background-image: url('/assets/FONDO.png');
+  background-size: 500px;
+  background-repeat: repeat;
+  background-position: top left;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ============ CONTENEDOR PRINCIPAL ============ */
+.alertas-container {
+  max-width: 650px;
+  margin: auto;
+  background: #ffffff;
+  padding: 2rem 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ============ TÍTULO ============ */
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+
+/* ============ TARJETAS DE ALERTA ============ */
+.alerta-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.2rem;
+  border: 1px solid #d9d9d9;
+  border-radius: 0.6rem;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+}
+
+/* Semáforo: sin stock (rojo) */
+.alerta-card.sin-stock {
+  background: #ffe6e6;
+  border-color: #ffb3b3;
+}
+
+/* Bajo stock pero no cero (naranja) */
+.alerta-card.bajo-stock {
+  background: #fff8e6;
+  border-color: #ffe0a3;
+}
+
+.nombre-prod {
+  font-weight: 600;
+}
+
+.badge-cant {
+  background: #ccc;
+  padding: 0.25rem 0.7rem;
+  border-radius: 0.8rem;
+  font-size: 0.8rem;
+}
+
+.badge-cant.rojo {
+  background: #ff4d4f;
+  color: #fff;
+}
+
+.badge-cant.naranja {
+  background: #ffa940;
+  color: #fff;
+}
+
+/* ============ BOTÓN AJUSTAR ============ */
+.btn-ajustar {
+  background: none;
+  border: none;
+  font-weight: bold;
+  color: #007bff;
+  cursor: pointer;
+  transition: color 0.25s;
+}
+
+.btn-ajustar:hover {
+  color: #004a9f;
+}
+
+/* ============ MENSAJE DE SIN ALERTAS ============ */
+.sin-alertas {
+  text-align: center;
+  color: #666;
+  margin: 3rem 0 2rem;
+}
+
+/* ============ ENLACE REGRESAR ============ */
+.link-back {
+  display: inline-block;
+  margin-top: 2rem;
+  color: gray;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link-back:hover {
+  color: #000;
+}

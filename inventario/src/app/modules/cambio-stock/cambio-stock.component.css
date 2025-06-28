@@ -1,0 +1,96 @@
+:host {
+  display: block;
+  height: 100vh;
+  background-image: url('/assets/FONDO.png');
+  background-size: 500px;
+  background-repeat: repeat;
+  background-position: top left;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.container-ajustar-stock {
+  max-width: 650px;
+  margin: auto;
+  background: #ffffff;
+  padding: 2rem 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+input[type="number"] {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s;
+}
+
+input[type="number"]:focus {
+  border-color: #8ae88a;
+  outline: none;
+}
+
+.is-invalid {
+  border-color: #dc3545 !important;
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+button {
+  cursor: pointer;
+  padding: 0.6rem 1.2rem;
+  border-radius: 1rem;
+  font-weight: bold;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+button.btn-secondary {
+  background-color: #ccc;
+  color: #000;
+}
+
+button.btn-secondary:hover {
+  background-color: #b3b3b3;
+}
+
+button.btn-primary {
+  background-color: #8ae88a;
+  color: #000;
+}
+
+button.btn-primary:hover {
+  background-color: #6fd16f;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
