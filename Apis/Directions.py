@@ -19,7 +19,7 @@ from Backend.Functions import dbConnLocal  # Para hacer la conexión a la BD
 from flask_mail import Mail, Message
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://inventario-web-iozf.onrender.com"])
 
 
 
