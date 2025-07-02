@@ -8,7 +8,7 @@ import { Producto } from './modules/login/interface/producto.interface';
 })
 export class ServiceService {
 
-  private baseUrl = 'http://localhost:5000'; // URL base de tu backend
+  private baseUrl = 'https://inventario-back-bmrw.onrender.com'; // URL base de tu backend
 
   constructor(private http: HttpClient) { }
 
