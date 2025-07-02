@@ -169,13 +169,29 @@ def eliminar_producto(current_user, idProducto):
     except Exception as e:
         HelperFunctions.PrintException()
         return jsonify({'error': 'Error al eliminar el producto'}), 500
+    
+
+
+@app.route('/productos/estado/<int:idProducto>', methods=['PATCH'])
+@token_required
+def cambiar_estado_producto(current_user, idProducto):
+    try:
+        data = request.get_json()
+        activo = bool(data.get('activo'))   # fuerza booleano
+
+        resultado = callMethod.actualizar_activo(idProducto, activo)
+        if resultado['success']:
+            return jsonify({'message': 'Status actualizado'}), 200
+        else:
+            return jsonify({'error': resultado['error']}), 400
+    except Exception:
+        HelperFunctions.PrintException()
+        return jsonify({'error': 'Error al actualizar status'}), 500
 
 
 if __name__ == '__main__':
-    # Obtén el puerto de la variable de entorno
     port = int(os.environ.get('PORT', 5000))
-    # Ejecuta la aplicación en el puerto dinámico
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port)
 
 
 

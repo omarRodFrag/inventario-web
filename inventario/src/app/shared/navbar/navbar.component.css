@@ -25,3 +25,23 @@
   font-size: 0.75rem;
   margin-left: 4px;
 }
+
+
+.flex-spacer {
+  flex: 1 1 auto;          /* empuja el siguiente elemento a la derecha */
+}
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  text-decoration: underline;
+}

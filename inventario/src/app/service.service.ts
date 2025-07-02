@@ -45,4 +45,14 @@ export class ServiceService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.delete(`${this.baseUrl}/productos/eliminar/${id}`, { headers });
   }
+
+  actualizarEstadoProducto(id: number, activo: boolean, token: string) {
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  // PATCH si creas un endpoint nuevo; PUT si reutilizas el existente
+  return this.http.patch(
+    `${this.baseUrl}/productos/estado/${id}`,
+    { activo },
+    { headers }
+  );
+}
 }

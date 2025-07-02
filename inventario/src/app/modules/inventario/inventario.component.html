@@ -4,6 +4,14 @@
     <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar producto" class="search-box" />
   </div>
 
+  <!-- Encabezados -->
+  <div class="producto-card encabezado">
+    <div class="producto-info">Producto</div>
+    <div class="cantidad">Cantidad</div>
+    <div class="status">Activo</div>
+    <div class="acciones">Acciones</div>
+  </div>
+
   <div *ngFor="let producto of productosFiltrados()" class="producto-card">
     <div class="producto-info">
       <i class="bi bi-box-seam me-2"></i>
@@ -11,8 +19,10 @@
     </div>
     <span class="cantidad">{{ producto.cantidad }}</span>
     <div class="status">
-      <label>Status</label>
-      <input type="checkbox" [(ngModel)]="producto.activo" disabled />
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="producto.activo" (change)="cambiarStatus(producto)" />
+        <span class="slider"></span>
+      </label>
     </div>
     <div class="acciones">
       <button class="ajustar-stock" (click)="ajustarStock(producto)">Ajustar stock</button>
@@ -21,8 +31,9 @@
     </div>
   </div>
 
-  <div class="footer">
-    <a routerLink="/login" class="regresar">⬅ Regresar</a>
-    <button class="agregar" (click)="agregarProducto()">Agregar Producto</button>
+  <div class="footer d-flex align-items-center">
+    <button class="agregar ms-auto" (click)="agregarProducto()">
+      Agregar Producto
+    </button>
   </div>
 </div>

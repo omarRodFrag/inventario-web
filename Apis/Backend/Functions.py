@@ -276,6 +276,21 @@ def send_verification_email(email, code):
         return False
 
 
+
+
+def actualizar_activo(idProducto, activo):
+    try:
+        res = dbConnLocal.clProductos.update_one(
+            {"idProducto": idProducto},
+            {"$set": {
+                "activo": activo,
+                "ultimaActualizacion": datetime.datetime.utcnow()
+            }}
+        )
+        return {'success': res.modified_count > 0}
+    except Exception:
+        HelperFunctions.PrintException()
+        return {'success': False, 'error': 'Error al actualizar status'}
     
     
 

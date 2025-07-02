@@ -34,9 +34,30 @@ export class InventarioComponent {
       },
       error: () => {
         Swal.fire('Error', 'No se pudieron cargar los productos', 'error');
+        this.router.navigate(['/login']);
       }
     });
   }
+
+  cambiarStatus(producto: Producto) {
+  const token = localStorage.getItem('auth_token')!;
+  const estadoNuevo = producto.activo;
+
+  this.service.actualizarEstadoProducto(
+    producto.idProducto!, 
+    estadoNuevo,
+    token
+  ).subscribe({
+    next: () => {
+      // Éxito: si quieres, muestra un toast
+      Swal.fire('Hecho', 'El Status a sido actualizado', 'success');
+    },
+    error: () => {
+      producto.activo = !estadoNuevo;
+      Swal.fire('Error', 'No se pudo actualizar el status', 'error');
+    }
+  });
+}
 
   productosFiltrados() {
     return this.productos.filter(p =>

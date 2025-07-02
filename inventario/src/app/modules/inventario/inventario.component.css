@@ -22,6 +22,23 @@
   align-items: center;
 }
 
+.producto-card.encabezado {
+  font-weight: bold;
+  background-color: #e2e8f0; /* gris claro */
+  border: none;
+  cursor: default;
+  user-select: none;
+
+  /* Quitar transición para que no se agrande */
+  transition: none !important;
+}
+
+/* Quitar el hover solo para la fila encabezado */
+.producto-card.encabezado:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
 .search-box {
   border: none;
   background: #f0f0f0;
@@ -30,20 +47,33 @@
   width: 200px;
 }
 
+/* Cambio a grid en producto-card para mejor alineación */
 .producto-card {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2.5fr 1fr 1fr 2fr;
   align-items: center;
   background: #fff;
   border: 1px solid #aaa;
   border-radius: 0.5rem;
   padding: 0.75rem 1rem;
   margin-top: 1rem;
+  
+  /* Transición suave */
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Efecto al pasar el mouse */
+@media (hover: hover) {
+  .producto-card:hover {
+    transform: translateY(-3px) scale(1.015);
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .producto-info {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .producto-info img {
@@ -53,21 +83,25 @@
 
 .nombre {
   font-weight: bold;
+  word-break: break-word;
 }
 
 .cantidad {
-  font-weight: normal;
+  font-weight: bold;
+  text-align: center;
 }
 
 .status {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
 }
 
 .acciones {
   display: flex;
   gap: 0.5rem;
+  justify-content: flex-end;
 }
 
 .eliminar {
@@ -115,4 +149,46 @@
   text-decoration: none;
   color: gray;
   font-weight: 500;
+}
+
+/* Switch personalizado */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: #d1d5db;
+  border-radius: 9999px;
+  transition: 0.2s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  top: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+input:checked + .slider {
+  background: #4ade80;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
 }
