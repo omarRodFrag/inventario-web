@@ -50,6 +50,7 @@ export class InventarioComponent {
   ).subscribe({
     next: () => {
       // Éxito: si quieres, muestra un toast
+      this.alertasService.refrescar(); 
       Swal.fire('Hecho', 'El Status a sido actualizado', 'success');
     },
     error: () => {
